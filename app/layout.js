@@ -10,7 +10,12 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={signika.className}>{children}</body>
+      <body className={signika.className}>
+        <div className="container mx-auto mb-10">
+
+          {children}
+        </div>
+      </body>
     </html>
   );
 }

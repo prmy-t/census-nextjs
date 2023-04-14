@@ -4,16 +4,18 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export default function Form() {
-  const [fName, setFName] = useState("");
-  const [lName, setLName] = useState("");
-  const [gender, setGender] = useState("");
-  const [age, setAge] = useState(0);
-  const [familySize, setFamilySize] = useState(0);
-  const [profession, setProfession] = useState("");
-  const [workExp, setWorkExp] = useState(0);
-  const [annualIncome, setAnnualIncome] = useState(0);
-  const [spendingScore, setSpendingScore] = useState(0);
+
+export default function Form({ type, data }) {
+  const [id, setId] = useState(data._id);
+  const [fName, setFName] = useState(data.fName);
+  const [lName, setLName] = useState(data.lName);
+  const [gender, setGender] = useState(data.gender);
+  const [age, setAge] = useState(data.age);
+  const [familySize, setFamilySize] = useState(data.familySize);
+  const [profession, setProfession] = useState(data.profession);
+  const [workExp, setWorkExp] = useState(data.workExp);
+  const [annualIncome, setAnnualIncome] = useState(data.annualIncome);
+  const [spendingScore, setSpendingScore] = useState(data.spendingScore);
 
   const router = useRouter();
 
@@ -46,7 +48,8 @@ export default function Form() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = {
+    var url = "";
+    const body_data = {
       fName,
       lName,
       gender,
@@ -57,16 +60,27 @@ export default function Form() {
       annualIncome,
       spendingScore,
     };
-    const res = await fetch("http://localhost:3000/post-record", {
+
+    if (type == 'add')
+      url = "http://localhost:3000/post-record";
+
+    else if (type == 'edit') {
+      url = "http://localhost:3000/post-edit"
+      body_data['id'] = id;
+    }
+
+    const res = await fetch(url, {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify(body_data),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
     });
-    if (res.data) {
-      console.log(res.data);
+    const data = await res.json()
+    if (data.success) {
+      console.log(data);
       router.push("/");
+      router.refresh()
     }
   };
   return (
@@ -84,6 +98,7 @@ export default function Form() {
             <div>
               <label>First Name </label>
               <input
+                value={fName}
                 type="text"
                 className="p-1 rounded-md bg-white border-2 fount-light w-full outline-none"
                 id="f_name"
@@ -94,6 +109,7 @@ export default function Form() {
             <div>
               <label>Last Name </label>
               <input
+                value={lName}
                 type="text"
                 className="p-1 rounded-md bg-white border-2 fount-light w-full outline-none"
                 id="f_name"
@@ -105,6 +121,7 @@ export default function Form() {
             <div className="">Gender:</div>
             <div className="flex space-x-1">
               <input
+                checked={gender == 'male' ? 'checked' : ''}
                 type="radio"
                 name="gender"
                 id="male"
@@ -115,6 +132,7 @@ export default function Form() {
             </div>
             <div className="flex space-x-1">
               <input
+                checked={gender == 'female' ? 'checked' : ''}
                 type="radio"
                 name="gender"
                 id="female"
@@ -129,6 +147,7 @@ export default function Form() {
             <div>
               <label>Age </label>
               <input
+                value={age}
                 type="number"
                 className=" p-1 rounded-md bg-white border-2 fount-light w-full outline-none"
                 id="f_name"
@@ -139,6 +158,7 @@ export default function Form() {
             <div>
               <label>Family Size </label>
               <input
+                value={familySize}
                 type="number"
                 className="p-1 rounded-md bg-white border-2 fount-light w-full outline-none"
                 id="f_name"
@@ -151,6 +171,7 @@ export default function Form() {
             <div>
               <label>Profession </label>
               <input
+                value={profession}
                 type="text"
                 className=" p-1 rounded-md bg-white border-2 fount-light w-full outline-none"
                 id="f_name"
@@ -161,6 +182,7 @@ export default function Form() {
             <div>
               <label>Work Exp. </label>
               <input
+                value={workExp}
                 type="number"
                 className="p-1 rounded-md bg-white border-2 fount-light w-full outline-none"
                 id="f_name"
@@ -172,6 +194,7 @@ export default function Form() {
             <div>
               <label>Annual Income </label>
               <input
+                value={annualIncome}
                 type="number"
                 className=" p-1 rounded-md bg-white border-2 fount-light w-full outline-none"
                 id="f_name"
@@ -182,6 +205,7 @@ export default function Form() {
             <div>
               <label>Spending Score</label>
               <input
+                value={spendingScore}
                 type="number"
                 className="p-1 rounded-md bg-white border-2 fount-light w-full outline-none"
                 id="f_name"
