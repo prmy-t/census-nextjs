@@ -1,3 +1,4 @@
+import Link from "next/link";
 import "./globals.css";
 import { Signika } from "next/font/google";
 
@@ -10,9 +11,14 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={signika.className}>
-        <div className="container mx-auto mb-10">
+      <body>
+        <div className="container mx-auto mb-10 mt-2">
+          <Link href="/">
+            <div className="flex justify-center">
 
+              <div className=" w-52 transition text-center text-3xl mb-10 hover:scale-105 hover:bg-slate-500 hover:text-white ease-in duration-150 rounded-md active:scale-95">CENSUS DATA</div>
+            </div>
+          </Link>
           {children}
         </div>
       </body>

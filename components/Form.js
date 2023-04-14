@@ -88,7 +88,7 @@ export default function Form({ type, data }) {
       <div className="flex justify-center">
         <form
           onSubmit={handleSubmit}
-          className="bg-white p-6 border  rounded-lg w-auto h-auto font-thin"
+          className="bg-white p-6 border  rounded-lg w-auto h-auto"
         >
           <p className="flex justify-center text-2xl  mb-10">
             Enter New Record
